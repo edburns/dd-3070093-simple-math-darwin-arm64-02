@@ -1,7 +1,10 @@
 [CmdletBinding()]
 param(
-    [ValidateRange(0, [int]::MaxValue)]
-    [int]$N
+    [ValidateScript({
+        $parsed = 0
+        [int]::TryParse([string]$_, [ref]$parsed) -and $parsed -ge 0
+    }, ErrorMessage = 'N must be a non-negative Int32 integer.')]
+    [object]$N
 )
 
 Set-StrictMode -Version Latest
@@ -21,18 +24,23 @@ function Get-Fibonacci {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [ValidateRange(0, [int]::MaxValue)]
-        [int]$N
+        [ValidateScript({
+            $parsed = 0
+            [int]::TryParse([string]$_, [ref]$parsed) -and $parsed -ge 0
+        }, ErrorMessage = 'N must be a non-negative Int32 integer.')]
+        [object]$N
     )
 
-    if ($N -lt 2) {
-        return [System.Numerics.BigInteger]$N
+    $indexValue = [int]$N
+
+    if ($indexValue -lt 2) {
+        return [System.Numerics.BigInteger]$indexValue
     }
 
     [System.Numerics.BigInteger]$previous = 0
     [System.Numerics.BigInteger]$current = 1
 
-    for ($index = 2; $index -le $N; $index++) {
+    for ($index = 2; $index -le $indexValue; $index++) {
         $next = $previous + $current
         $previous = $current
         $current = $next
@@ -48,6 +56,7 @@ if (-not $isDotSourced) {
         throw 'Parameter N is required for direct execution. Invoke as math-tool.ps1 -N <non-negative integer>.'
     }
 
-    $value = Get-Fibonacci -N $N
-    Write-Output "Fibonacci($N) = $value"
+    $indexValue = [int]$N
+    $value = Get-Fibonacci -N $indexValue
+    Write-Output "Fibonacci($indexValue) = $value"
 }

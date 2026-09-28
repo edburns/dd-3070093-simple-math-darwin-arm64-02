@@ -82,6 +82,10 @@ Describe 'Get-Fibonacci' {
         $output[0] | Should -BeOfType ([System.Numerics.BigInteger])
         $output[0] | Should -Be 13
     }
+
+    It 'rejects fractional input before integer coercion' {
+        { Get-Fibonacci -N 1.5 } | Should -Throw
+    }
 }
 
 Describe 'math-tool.ps1 CLI' {
@@ -121,6 +125,14 @@ Describe 'math-tool.ps1 CLI' {
         $result.ExitCode | Should -Not -Be 0
         $result.Stdout | Should -Not -Match '^Fibonacci\(-1\) = '
         $result.Stderr | Should -Not -Be ''
+    }
+
+    It 'rejects fractional input without a success-shaped result' {
+        $result = Invoke-MathToolCli -Arguments @('-N', '1.5')
+
+        $result.ExitCode | Should -Not -Be 0
+        $result.Stdout | Should -Not -Match '^Fibonacci\('
+        $result.Stderr | Should -Match 'N must be a non-negative Int32 integer\.'
     }
 
     It 'requires N for direct execution without a success-shaped result' {
