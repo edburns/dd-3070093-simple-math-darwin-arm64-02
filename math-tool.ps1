@@ -1,10 +1,10 @@
 [CmdletBinding()]
 param(
-    [ValidateRange(0, [int]::MaxValue)]
     [int]$N
 )
 
 Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
 function Get-Fibonacci {
     [CmdletBinding()]

@@ -12,7 +12,7 @@ BeforeAll {
         )
 
         $startInfo = [System.Diagnostics.ProcessStartInfo]::new()
-        $startInfo.FileName = (Get-Command pwsh).Source
+        $startInfo.FileName = (Get-Process -Id $PID).Path
         foreach ($argument in @('-NoLogo', '-NoProfile', '-File', $script:MathToolPath) + $Arguments) {
             [void]$startInfo.ArgumentList.Add($argument)
         }
@@ -21,16 +21,20 @@ BeforeAll {
         $startInfo.UseShellExecute = $false
 
         $process = [System.Diagnostics.Process]::Start($startInfo)
-        $stdoutTask = $process.StandardOutput.ReadToEndAsync()
-        $stderrTask = $process.StandardError.ReadToEndAsync()
-        $process.WaitForExit()
-        $stdout = $stdoutTask.GetAwaiter().GetResult()
-        $stderr = $stderrTask.GetAwaiter().GetResult()
+        try {
+            $stdoutTask = $process.StandardOutput.ReadToEndAsync()
+            $stderrTask = $process.StandardError.ReadToEndAsync()
+            $process.WaitForExit()
+            $stdout = $stdoutTask.GetAwaiter().GetResult()
+            $stderr = $stderrTask.GetAwaiter().GetResult()
 
-        [pscustomobject]@{
-            ExitCode = $process.ExitCode
-            Stdout = $stdout
-            Stderr = $stderr
+            [pscustomobject]@{
+                ExitCode = $process.ExitCode
+                Stdout = $stdout
+                Stderr = $stderr
+            }
+        } finally {
+            $process.Dispose()
         }
     }
 
