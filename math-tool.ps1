@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [ValidateRange('NonNegative')]
+    [ValidateRange(0, [int]::MaxValue)]
     [int]$N
 )
 
@@ -21,7 +21,7 @@ function Get-Fibonacci {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [ValidateRange('NonNegative')]
+        [ValidateRange(0, [int]::MaxValue)]
         [int]$N
     )
 
@@ -41,6 +41,7 @@ function Get-Fibonacci {
     return $current
 }
 
+# PowerShell sets InvocationName to '.' when a script is dot-sourced.
 $isDotSourced = $MyInvocation.InvocationName -eq '.'
 if (-not $isDotSourced) {
     if (-not $PSBoundParameters.ContainsKey('N')) {
