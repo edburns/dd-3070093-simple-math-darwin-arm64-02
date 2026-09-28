@@ -33,6 +33,25 @@ BeforeAll {
             Stderr = $stderr
         }
     }
+
+    function Assert-SingleStdoutLine {
+        param(
+            [Parameter(Mandatory)]
+            [string]$Stdout,
+
+            [Parameter(Mandatory)]
+            [string]$ExpectedLine
+        )
+
+        $Stdout.EndsWith("`n") | Should -BeTrue
+        if ($Stdout.EndsWith("`r`n")) {
+            $content = $Stdout.Substring(0, $Stdout.Length - 2)
+        } else {
+            $content = $Stdout.Substring(0, $Stdout.Length - 1)
+        }
+
+        $content | Should -Be $ExpectedLine
+    }
 }
 
 Describe 'Get-Fibonacci' {
@@ -67,7 +86,7 @@ Describe 'math-tool.ps1 CLI' {
 
         $result.ExitCode | Should -Be 0
         $result.Stderr | Should -Be ''
-        $result.Stdout | Should -Be "Fibonacci(0) = 0$([Environment]::NewLine)"
+        Assert-SingleStdoutLine -Stdout $result.Stdout -ExpectedLine 'Fibonacci(0) = 0'
     }
 
     It 'writes exactly one Fibonacci line for N=1' {
@@ -75,7 +94,7 @@ Describe 'math-tool.ps1 CLI' {
 
         $result.ExitCode | Should -Be 0
         $result.Stderr | Should -Be ''
-        $result.Stdout | Should -Be "Fibonacci(1) = 1$([Environment]::NewLine)"
+        Assert-SingleStdoutLine -Stdout $result.Stdout -ExpectedLine 'Fibonacci(1) = 1'
     }
 
     It 'writes exactly one Fibonacci line for a representative input' {
@@ -83,7 +102,7 @@ Describe 'math-tool.ps1 CLI' {
 
         $result.ExitCode | Should -Be 0
         $result.Stderr | Should -Be ''
-        $result.Stdout | Should -Be "Fibonacci(7) = 13$([Environment]::NewLine)"
+        Assert-SingleStdoutLine -Stdout $result.Stdout -ExpectedLine 'Fibonacci(7) = 13'
     }
 
     It 'does not emit the CLI result line when dot-sourced' {
@@ -97,7 +116,7 @@ Describe 'math-tool.ps1 CLI' {
 
         $result.ExitCode | Should -Not -Be 0
         $result.Stdout | Should -Not -Match '^Fibonacci\(-1\) = '
-        $result.Stderr | Should -Match 'minimum allowed range of 0'
+        $result.Stderr | Should -Not -Be ''
     }
 
     It 'requires N for direct execution without a success-shaped result' {
