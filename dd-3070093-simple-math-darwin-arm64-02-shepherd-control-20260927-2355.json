@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "repository": "edburns/dd-3070093-simple-math-darwin-arm64-02",
+  "repositoryUrl": "https://github.com/edburns/dd-3070093-simple-math-darwin-arm64-02",
+  "startedAt": "2026-09-28T02:48:25Z",
+  "completedAt": "2026-09-28T03:55:33Z",
+  "lessonPropagation": "off",
+  "baselineBranch": "experiment/shepherd-shared-baseline",
+  "baselineSha": "2e53a1e4e34edb62dbbbbebf4d82f83d2249cb2c",
+  "target": "/Users/edburns/workareas/dd-3070093-simple-math-darwin-arm64-02-shepherd-target",
+  "branch": "experiment/shepherd-control",
+  "worktree": "/Users/edburns/workareas/dd-3070093-simple-math-darwin-arm64-02-shepherd-control",
+  "campaignDirectory": "/Users/edburns/workareas/dd-3070093-simple-math-darwin-arm64-02-shepherd-control/1-math-control-remove-before-merge",
+  "issues": [
+    2,
+    3
+  ],
+  "handoff": "/Users/edburns/workareas/dd-3070093-simple-math-darwin-arm64-02-shepherd-control/1-math-control-remove-before-merge/prompts/shepherd-task-20-20260927-2248/shepherd-test-experiment-handoff.json",
+  "runDirectory": "/Users/edburns/workareas/dd-3070093-simple-math-darwin-arm64-02-shepherd-control/1-math-control-remove-before-merge/shepherd-tasks-07a96e3d-0eae-459e-8b51-a6ff1a0ea7e0-20260927-2251",
+  "postMortem": "/Users/edburns/workareas/dd-3070093-simple-math-darwin-arm64-02-shepherd-control/1-math-control-remove-before-merge/shepherd-tasks-07a96e3d-0eae-459e-8b51-a6ff1a0ea7e0-20260927-2251/20260927-2349-post-mortem.md",
+  "lessons": "/Users/edburns/workareas/dd-3070093-simple-math-darwin-arm64-02-shepherd-control/1-math-control-remove-before-merge/campaign-lessons.md"
+}
