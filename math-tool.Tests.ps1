@@ -116,6 +116,10 @@ Describe 'Get-Factorial' {
     It 'rejects fractional input before integer coercion' {
         { Get-Factorial -N 1.5 } | Should -Throw
     }
+
+    It 'rejects negative input before integer coercion' {
+        { Get-Factorial -N -1 } | Should -Throw
+    }
 }
 
 Describe 'math-tool.ps1 CLI' {
