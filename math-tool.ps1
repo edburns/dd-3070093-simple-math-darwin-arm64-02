@@ -1,11 +1,22 @@
 [CmdletBinding()]
 param(
+    [ValidateRange(0, [int]::MaxValue)]
     [int]$N
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+<#
+.SYNOPSIS
+Returns the Fibonacci value for a non-negative integer.
+
+.PARAMETER N
+The non-negative integer Fibonacci index.
+
+.OUTPUTS
+System.Numerics.BigInteger
+#>
 function Get-Fibonacci {
     [CmdletBinding()]
     param(
