@@ -116,7 +116,7 @@ Describe 'math-tool.ps1 CLI' {
     }
 
     It 'rejects negative input without a success-shaped result' {
-        $result = Invoke-MathToolCli -Arguments @('-N', '-1')
+        $result = Invoke-MathToolCli -Arguments @('-N:-1')
 
         $result.ExitCode | Should -Not -Be 0
         $result.Stdout | Should -Not -Match '^Fibonacci\(-1\) = '
