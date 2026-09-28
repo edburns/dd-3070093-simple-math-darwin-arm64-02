@@ -15,14 +15,14 @@ function Get-Fibonacci {
     )
 
     if ($N -lt 2) {
-        return [long]$N
+        return [System.Numerics.BigInteger]$N
     }
 
-    [long]$previous = 0
-    [long]$current = 1
+    [System.Numerics.BigInteger]$previous = 0
+    [System.Numerics.BigInteger]$current = 1
 
     for ($index = 2; $index -le $N; $index++) {
-        [long]$next = $previous + $current
+        [System.Numerics.BigInteger]$next = $previous + $current
         $previous = $current
         $current = $next
     }
@@ -31,6 +31,10 @@ function Get-Fibonacci {
 }
 
 if ($MyInvocation.InvocationName -ne '.') {
+    if (-not $PSBoundParameters.ContainsKey('N')) {
+        throw 'Parameter N is required for direct execution.'
+    }
+
     $value = Get-Fibonacci -N $N
     Write-Output "Fibonacci($N) = $value"
 }

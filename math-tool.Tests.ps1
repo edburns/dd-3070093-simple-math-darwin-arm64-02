@@ -7,6 +7,7 @@ BeforeAll {
     function Invoke-MathToolCli {
         param(
             [Parameter(Mandatory)]
+            [AllowEmptyCollection()]
             [string[]]$Arguments
         )
 
@@ -20,9 +21,11 @@ BeforeAll {
         $startInfo.UseShellExecute = $false
 
         $process = [System.Diagnostics.Process]::Start($startInfo)
-        $stdout = $process.StandardOutput.ReadToEnd()
-        $stderr = $process.StandardError.ReadToEnd()
+        $stdoutTask = $process.StandardOutput.ReadToEndAsync()
+        $stderrTask = $process.StandardError.ReadToEndAsync()
         $process.WaitForExit()
+        $stdout = $stdoutTask.GetAwaiter().GetResult()
+        $stderr = $stderrTask.GetAwaiter().GetResult()
 
         [pscustomobject]@{
             ExitCode = $process.ExitCode
@@ -37,7 +40,7 @@ Describe 'Get-Fibonacci' {
         $output = @(Get-Fibonacci -N 0)
 
         $output | Should -HaveCount 1
-        $output[0] | Should -BeOfType ([long])
+        $output[0] | Should -BeOfType ([System.Numerics.BigInteger])
         $output[0] | Should -Be 0
     }
 
@@ -45,7 +48,7 @@ Describe 'Get-Fibonacci' {
         $output = @(Get-Fibonacci -N 1)
 
         $output | Should -HaveCount 1
-        $output[0] | Should -BeOfType ([long])
+        $output[0] | Should -BeOfType ([System.Numerics.BigInteger])
         $output[0] | Should -Be 1
     }
 
@@ -53,7 +56,7 @@ Describe 'Get-Fibonacci' {
         $output = @(Get-Fibonacci -N 7)
 
         $output | Should -HaveCount 1
-        $output[0] | Should -BeOfType ([long])
+        $output[0] | Should -BeOfType ([System.Numerics.BigInteger])
         $output[0] | Should -Be 13
     }
 }
@@ -94,5 +97,12 @@ Describe 'math-tool.ps1 CLI' {
 
         $result.ExitCode | Should -Not -Be 0
         $result.Stdout | Should -Not -Match '^Fibonacci\(-1\) = '
+    }
+
+    It 'requires N for direct execution without a success-shaped result' {
+        $result = Invoke-MathToolCli -Arguments @()
+
+        $result.ExitCode | Should -Not -Be 0
+        $result.Stdout | Should -Not -Match '^Fibonacci\(0\) = 0'
     }
 }
