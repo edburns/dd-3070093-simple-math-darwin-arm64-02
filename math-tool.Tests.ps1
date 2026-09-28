@@ -97,6 +97,7 @@ Describe 'math-tool.ps1 CLI' {
 
         $result.ExitCode | Should -Not -Be 0
         $result.Stdout | Should -Not -Match '^Fibonacci\(-1\) = '
+        $result.Stderr | Should -Match 'minimum allowed range of 0'
     }
 
     It 'requires N for direct execution without a success-shaped result' {
@@ -104,5 +105,6 @@ Describe 'math-tool.ps1 CLI' {
 
         $result.ExitCode | Should -Not -Be 0
         $result.Stdout | Should -Not -Match '^Fibonacci\(0\) = 0'
+        $result.Stderr | Should -Match 'Parameter N is required for direct execution\.'
     }
 }

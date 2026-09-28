@@ -30,7 +30,8 @@ function Get-Fibonacci {
     return $current
 }
 
-if ($MyInvocation.InvocationName -ne '.') {
+$isDotSourced = $MyInvocation.InvocationName -eq '.'
+if (-not $isDotSourced) {
     if (-not $PSBoundParameters.ContainsKey('N')) {
         throw 'Parameter N is required for direct execution.'
     }
