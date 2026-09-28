@@ -102,6 +102,8 @@ if (-not $isDotSourced) {
             Write-Output "Factorial($indexValue) = $value"
         }
         default {
+            # Unreachable via normal parameter binding due to ValidateSet above;
+            # retained as defense-in-depth against unexpected Operation values.
             throw "Unsupported Operation '$Operation'. Supported operations are 'fibonacci' and 'factorial'."
         }
     }
