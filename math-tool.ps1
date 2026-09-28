@@ -12,7 +12,7 @@ $ErrorActionPreference = 'Stop'
 Returns the Fibonacci value for a non-negative integer.
 
 .PARAMETER N
-The non-negative integer Fibonacci index.
+The non-negative Int32 Fibonacci index.
 
 .OUTPUTS
 System.Numerics.BigInteger
@@ -33,7 +33,7 @@ function Get-Fibonacci {
     [System.Numerics.BigInteger]$current = 1
 
     for ($index = 2; $index -le $N; $index++) {
-        [System.Numerics.BigInteger]$next = $previous + $current
+        $next = $previous + $current
         $previous = $current
         $current = $next
     }
@@ -44,7 +44,7 @@ function Get-Fibonacci {
 $isDotSourced = $MyInvocation.InvocationName -eq '.'
 if (-not $isDotSourced) {
     if (-not $PSBoundParameters.ContainsKey('N')) {
-        throw 'Parameter N is required for direct execution.'
+        throw 'Parameter N is required for direct execution. Invoke as math-tool.ps1 -N <non-negative integer>.'
     }
 
     $value = Get-Fibonacci -N $N
